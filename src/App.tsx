@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react"
+import { ChakraProvider, Flex, Text, VStack } from "@chakra-ui/react"
+import { useMagicContext } from "./context/magic-context"
+import ConnectButton from "./components/connect-button"
+import Wallet from "./components/wallet"
 
 function App() {
+  const { magic, web3 } = useMagicContext()
+  const [account, setAccount] = useState<string | null>(null)
+
+  const isLoggedIn = async () => {
+    if (!magic || !web3) return
+    const accounts = await web3.eth.getAccounts()
+    setAccount(accounts[0])
+    console.log(accounts)
+  }
+
+  useEffect(() => {
+    isLoggedIn()
+  }, [isLoggedIn])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ChakraProvider>
+      <VStack justifyContent="center" alignItems="center" minH="100vh">
+        {!account ? (
+          <ConnectButton setAccount={setAccount} />
+        ) : (
+          <Wallet account={account} setAccount={setAccount} />
+        )}
+      </VStack>
+    </ChakraProvider>
+  )
 }
 
-export default App;
+export default App
