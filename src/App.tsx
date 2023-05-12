@@ -6,6 +6,7 @@ import ConnectButton from "./components/connect-button"
 import WalletDetail from "./components/wallet-detail"
 import DisconnectButton from "./components/disconnect-button"
 import ShowUIButton from "./components/showui-button"
+import SignMessage from "./components/sign-message"
 
 function App() {
   // Retrieve the web3 instance from our Magic context
@@ -40,6 +41,7 @@ function App() {
       ) : (
         <>
           <WalletDetail account={account} />
+          <SignMessage account={account} />
           <DisconnectButton setAccount={setAccount} />
           <ShowUIButton />
         </>
