@@ -3,14 +3,17 @@ import ReactDOM from "react-dom/client"
 import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
-import MagicProvider from "./context/magic-context"
+import { ChakraProvider } from "@chakra-ui/react"
+import { MagicProvider } from "./context/magic-context"
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
-    <MagicProvider>
-      <App />
-    </MagicProvider>
+    <ChakraProvider>
+      <MagicProvider>
+        <App />
+      </MagicProvider>
+    </ChakraProvider>
   </React.StrictMode>
 )
 
