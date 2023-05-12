@@ -18,6 +18,12 @@ const MagicProvider = ({ children }: { children: React.ReactNode }) => {
   const [magicInstance, setMagicInstance] = useState<Magic | null>(null)
   const [web3Instance, setWeb3Instance] = useState<Web3 | null>(null)
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      initialize()
+    }
+  }, [])
+
   const initialize = async () => {
     const magic = new Magic("pk_live_51FA35CBAD23D818", {
       network: {
@@ -30,12 +36,6 @@ const MagicProvider = ({ children }: { children: React.ReactNode }) => {
     setMagicInstance(magic)
     setWeb3Instance(web3)
   }
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      initialize()
-    }
-  }, [])
 
   return (
     <MagicContext.Provider

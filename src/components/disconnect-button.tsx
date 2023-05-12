@@ -5,20 +5,20 @@ interface Props {
   setAccount: React.Dispatch<React.SetStateAction<string | null>>
 }
 
-const ConnectButton = ({ setAccount }: Props) => {
+const DisconnectButton = ({ setAccount }: Props) => {
   const { magic } = useMagicContext()
 
   const connect = async () => {
     if (!magic) return
     try {
-      const accounts = await magic.wallet.connectWithUI()
-      setAccount(accounts[0])
+      await magic?.wallet.disconnect()
+      setAccount(null)
     } catch (error) {
       console.log(error)
     }
   }
 
-  return <Button onClick={connect}>Connect</Button>
+  return <Button onClick={connect}>Disconnect</Button>
 }
 
-export default ConnectButton
+export default DisconnectButton
