@@ -1,31 +1,22 @@
-// Import necessary modules and context
-import { useMagicContext } from "../context/magic-context"
 import { Button } from "@chakra-ui/react"
+import { magic } from "../libs/magic"
+import { useWeb3 } from "../context/Web3Context"
 
-// Define the prop structure for this component
-interface Props {
-  setAccount: React.Dispatch<React.SetStateAction<string | null>>
-}
-
-// Define the DisconnectButton component
-const DisconnectButton = ({ setAccount }: Props) => {
-  // Use the Magic context
-  const { magic } = useMagicContext()
+const DisconnectButton = () => {
+  // Get the initializeWeb3 function from the Web3 context
+  const { initializeWeb3 } = useWeb3()
 
   // Define the event handler for the button click
   const handleDisconnect = async () => {
-    // Return early if Magic is not defined
-    if (!magic) return
-
     try {
-      // Try to disconnect the wallet using Magic
-      await magic?.wallet.disconnect()
+      // Try to disconnect the user's wallet using Magic's logout method
+      await magic.user.logout()
 
-      // If successful, reset the account state
-      setAccount(null)
+      // After successful disconnection, re-initialize the Web3 instance
+      initializeWeb3()
     } catch (error) {
       // Log any errors that occur during the disconnection process
-      console.log(error)
+      console.log("handleDisconnect:", error)
     }
   }
 

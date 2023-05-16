@@ -1,31 +1,23 @@
-// Import necessary modules and context
-import { useMagicContext } from "../context/magic-context"
 import { Button } from "@chakra-ui/react"
-
-// Define the prop structure for this component
-interface Props {
-  setAccount: React.Dispatch<React.SetStateAction<string | null>>
-}
+import { magic } from "../libs/magic"
+import { useWeb3 } from "../context/Web3Context"
 
 // Define the ConnectButton component
-const ConnectButton = ({ setAccount }: Props) => {
-  // Use the Magic context
-  const { magic } = useMagicContext()
+const ConnectButton = () => {
+  // Get the initializeWeb3 function from the Web3 context
+  const { initializeWeb3 } = useWeb3()
 
   // Define the event handler for the button click
   const handleConnect = async () => {
-    // Return early if Magic is not defined
-    if (!magic) return
-
     try {
       // Try to connect to the wallet using Magic's user interface
-      const accounts = await magic.wallet.connectWithUI()
+      await magic.wallet.connectWithUI()
 
-      // If successful, set the first account as the active account
-      setAccount(accounts[0])
+      // If connection to the wallet was successful, initialize new Web3 instance
+      initializeWeb3()
     } catch (error) {
       // Log any errors that occur during the connection process
-      console.log(error)
+      console.error("handleConnect:", error)
     }
   }
 

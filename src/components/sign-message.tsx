@@ -1,24 +1,17 @@
-// Import necessary modules and context
 import { useState, useRef } from "react"
 import { HStack, Box, VStack, Input, Button, Text } from "@chakra-ui/react"
-import { useMagicContext } from "../context/magic-context"
+import { useWeb3 } from "../context/Web3Context"
+import { useUser } from "../context/UserContext"
 
-// Define the prop structure for this component
-type Props = {
-  account: string | null
-}
-
-// Define the SignMessage component which is used for signing a message with the connected wallet
-const SignMessage = ({ account }: Props) => {
-  // Use the Magic context
-  const { web3 } = useMagicContext()
+const SignMessage = () => {
+  // Use the Web3Context to get the current instance of web3
+  const { web3 } = useWeb3()
+  // Use the UserContext to get the current logged-in user
+  const { user } = useUser()
 
   // Initialize state for message and signature
   const [message, setMessage] = useState("")
   const [signature, setSignature] = useState("")
-
-  // Initialize a ref for the input field
-  const inputRef = useRef(null)
 
   // Define the handler for input change, it updates the message state with input value
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -26,15 +19,15 @@ const SignMessage = ({ account }: Props) => {
 
   // Define the signMessage function which is used to sign the message
   const handleSignMessage = async () => {
-    if (account && web3) {
+    if (user && web3) {
       try {
         // Sign the message using the connected wallet
-        const signedMessage = await web3.eth.personal.sign(message, account, "")
+        const signedMessage = await web3.eth.personal.sign(message, user, "")
         // Set the signature state with the signed message
         setSignature(signedMessage)
       } catch (error) {
         // Log any errors that occur during the signing process
-        console.error(error)
+        console.error("handleSignMessage:", error)
       }
     }
   }
@@ -52,12 +45,10 @@ const SignMessage = ({ account }: Props) => {
         <VStack>
           {/* Input field for the message to be signed */}
           <Input
-            ref={inputRef}
-            value={message}
             placeholder="Set Message"
             maxLength={20}
             onChange={handleInput}
-            w="140px"
+            w="300px"
           />
           {/* Button to trigger the signMessage function */}
           <Button onClick={handleSignMessage} isDisabled={!message}>
