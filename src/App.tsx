@@ -1,11 +1,10 @@
 import { VStack } from "@chakra-ui/react"
 import { useUser } from "./context/UserContext"
-import ConnectButton from "./components/connect-button"
-import WalletDetail from "./components/wallet-detail"
-import DisconnectButton from "./components/disconnect-button"
-import ShowUIButton from "./components/showui-button"
-import SignMessage from "./components/sign-message"
-
+import ConnectButton from "./components/ConnectButton"
+import WalletDetail from "./components/WalletDetail"
+import DisconnectButton from "./components/DisconnectButton"
+import ShowUIButton from "./components/ShowUIButton"
+import SignMessage from "./components/SignMessage"
 function App() {
   // Use the UserContext to get the current logged-in user
   const { user } = useUser()

@@ -2,7 +2,6 @@ import { Button } from "@chakra-ui/react"
 import { magic } from "../libs/magic"
 import { useWeb3 } from "../context/Web3Context"
 
-// Define the ConnectButton component
 const ConnectButton = () => {
   // Get the initializeWeb3 function from the Web3 context
   const { initializeWeb3 } = useWeb3()
